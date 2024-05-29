@@ -1,20 +1,24 @@
-import React,{useState} from "react";
+import React,{useState, useTransition} from "react";
 
 function CreateArea(props) {
   const [input,setInput] = useState({title:"", content:""})
-  
+  const [blank,setBlank] = useState(true);
   function handleChange(event) {
     const { value, name } = event.target;
     setInput(prevValue => ({
       ...prevValue,
       [name]: value
     }));
+    setBlank(false);
   }
 
   function handleClick(event){
     event.preventDefault();
-    props.onAdd(input);
-    setInput({title:"",content:""})
+    if (!blank) {
+      props.onAdd(input);
+      setInput({ title: "", content: "" });
+      setBlank(true);
+    }
   }
 
   return (
